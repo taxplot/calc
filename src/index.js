@@ -1,6 +1,21 @@
-import React from 'react'
-import styles from './styles.module.css'
+import { TaxPayer } from './taxPayer'
+import {
+  taxBrackets,
+  standardDeduction,
+  taxValues,
+  marginalRate,
+  taxAmount,
+  effectiveRate
+} from './fetch-data'
+import { bracketPlot } from './viz-data'
 
-export const ExampleComponent = ({ text }) => {
-  return <div className={styles.test}>Example Component: {text}</div>
+export {
+  marginalRate,
+  effectiveRate,
+  standardDeduction,
+  taxBrackets,
+  taxAmount,
+  taxValues,
+  TaxPayer,
+  bracketPlot
 }
