@@ -57,7 +57,7 @@ A new TaxPayer object is initialized as a US taxpayer filing federal-only as sin
 ```
 Any of these values can be overridden on initialization or changed later.
 
-##taxBrackets([TOKEN], [TaxPayer])
+## taxBrackets([TOKEN], [TaxPayer])
 The `taxBrackets` function returns a promise that resolves to an array of tax bracket objects corresponding to a given TaxPayer.
 
 ```JavaScript
@@ -82,7 +82,7 @@ const brackets = taxBrackets(TOKEN, taxPayer)
 ]
 ```
 
-##standardDeduction([TOKEN], [TaxPayer])
+### standardDeduction([TOKEN], [TaxPayer])
 The `standardDeduction` function returns a promise that resolves to a dollar amount corresponding to a taxpayer's standard deduction amount.
 
 ```JavaScript
@@ -101,7 +101,7 @@ const deduction = standardDeduction(TOKEN, taxPayer)
 ```
 This value can then be assigned to `taxPayer.deduction`.
 
-###taxValues([TOKEN OR TAX_BRACKET_OBJECT], [TaxPayer])
+### taxValues([TOKEN OR TAX_BRACKET_OBJECT], [TaxPayer])
 
 `taxValues` returns a promise that resolves to a three-value object containing a given taxpayer's marginal tax rate, calculated tax amount due, 
 and calculated effective tax rate. In addition to the `TaxPayer` object, it requires either a `token` with which to fetch the relevant set of
@@ -131,7 +131,7 @@ const taxResult = taxValues(brackets, taxPayer)
 In both cases, `taxResult` will resolve to:
 
 
-```JavaScript
+```JavaScript        
 {"marginalRate":0.24,"taxAmount":15198.5,"effectiveRate":0.151985}
 ```
 
@@ -153,7 +153,7 @@ and
 `effectiveRate([Token or taxBrackets], [TaxPayer])` is equivalent to `taxValues([Token or taxBrackets], [TaxPayer]).effectiveRate`
 
 
-###bracketPlot([taxBracket], [deduction], [max Value])
+### bracketPlot([taxBracket], [deduction], [max Value])
 `bracketPlot` is useful for turning a taxBracket object into something that is easily displayed visually. For example,
 
 ```JavaScript
