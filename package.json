@@ -1,6 +1,6 @@
 {
   "name": "@taxplot/calc",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "tax data and calcs for taxplot",
   "author": "CTBushong",
   "license": "MIT",

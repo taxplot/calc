@@ -15,7 +15,7 @@ const App = () => {
   
   var plotBracket 
   const token='THISISMYTAXPLOTTOKEN'
-  const taxPayer = new TaxPayer({income:100000, deduction:12400})
+  const taxPayer = new TaxPayer({income:5, deduction:12400})
 
   useEffect(() =>  {
     const getData = async () => {

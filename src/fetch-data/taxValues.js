@@ -1,5 +1,7 @@
 const taxValues = (brackets, taxPayer) => {
-  var marginalRate, taxAmount, effectiveRate
+  var marginalRate = 0
+  var taxAmount = 0
+  var effectiveRate = 0
 
   if (!taxPayer.deduction) {
     taxPayer.deduction = 0
