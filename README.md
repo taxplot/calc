@@ -4,9 +4,8 @@
 
 [![NPM](https://img.shields.io/npm/v/@taxplot/calc.svg)](https://www.npmjs.com/package/@taxplot/calc) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-## What Is This
-@taxplot/calc is a plain JavaScript library used at [tax·plot](https://taxplot.com) for tax-related calculations. It pulls tax data such as
-tax rates from our server and provides that data and calculation results in a format that is easy to use.
+## What Is This?
+@taxplot/calc is a plain JavaScript library used at [tax·plot](https://taxplot.com) for tax-related calculations. It can retrieve tax data such as tax rates from our server and provides that data and calculation results in a format that is easy to use.
 
 For now only US federal and some state tax data is available. This will be added to in the future.
 
@@ -19,14 +18,11 @@ npm install --save @taxplot/calc
 ## Usage
 
 ### Access Token
-Tax data required for tax calculations (brackets, rates, standard deduction amounts, etc.) is made available to @taxplot/calc via the taxplot 
-taxQL GraphQL server and requires an authentication token to access. A token is automatically assigned when you create a user account at 
-taxplot.com.
+Tax data required for tax calculations (brackets, rates, standard deduction amounts, etc.) is made available to @taxplot/calc via the taxplot taxQL GraphQL server and requires an authentication token to access. A token is automatically assigned when you create a user account at taxplot.com. Email support@taxplot.com with questions.
 
 As with any access token, do not store yours in a publicly discoverable place.
 
-The taxQL endpoint can be accessed directly at taxql.taxplot.com. To explore using GraphQL Playground, open taxql.taxplot.com in a web browser
-and paste your token in the HTTP HEADERS area at the lower left.
+The taxQL endpoint can be accessed directly at taxql.taxplot.com. To explore using GraphQL Playground, open taxql.taxplot.com in a web browser and paste your token in the HTTP HEADERS area at the lower left.
 
 ```JavaScript
 {
@@ -57,7 +53,8 @@ A new TaxPayer object is initialized as a US taxpayer filing federal-only as sin
 ```
 Any of these values can be overridden on initialization or changed later.
 
-## taxBrackets([TOKEN], [TaxPayer])
+## Async Functions
+### taxBrackets([TOKEN], [TaxPayer])
 The `taxBrackets` function returns a promise that resolves to an array of tax bracket objects corresponding to a given TaxPayer.
 
 ```JavaScript
@@ -101,22 +98,12 @@ const deduction = standardDeduction(TOKEN, taxPayer)
 ```
 This value can then be assigned to `taxPayer.deduction`.
 
-### taxValues([TOKEN OR TAX_BRACKET_OBJECT], [TaxPayer])
+## Synchronous Functions
+### taxValues([TAX_BRACKET_OBJECT], [TaxPayer])
 
-`taxValues` returns a promise that resolves to a three-value object containing a given taxpayer's marginal tax rate, calculated tax amount due, 
-and calculated effective tax rate. In addition to the `TaxPayer` object, it requires either a `token` with which to fetch the relevant set of
-tax brackets, or a tax brackets object previously fetched using the `taxBrackets` function.
-
-```JavaScript
-import { TaxPayer, taxValues } from '@taxplot/calc'
-
-const taxPayer = new TaxPayer()
-
-const taxResult = taxValues(TOKEN, taxPayer)
-
-```
-
-OR
+`taxValues` returns a three-value object containing a given taxpayer's marginal tax rate, calculated tax amount due, 
+and calculated effective tax rate. In addition to the `TaxPayer` object, it requires a tax brackets object previously 
+fetched using the `taxBrackets` function.
 
 ```JavaScript
 import { TaxPayer, taxValues, taxBrackets } from '@taxplot/calc'
@@ -128,29 +115,27 @@ const taxResult = taxValues(brackets, taxPayer)
 
 ```
 
-In both cases, `taxResult` will resolve to:
+`taxResult` will return:
 
 
 ```JavaScript        
 {"marginalRate":0.24,"taxAmount":15198.5,"effectiveRate":0.151985}
 ```
 
-Where a TaxPayer object's `deduction` amount is `null`, the `taxValues` function will assume a `deduction` amount equal to the appropriate
-standard deduction only when the first parameter is a `token`. When the first parameter is a tax brackets object, the function will assume 
-`deduction` equals `0`. To avoid confusion, assign `TaxPayer.deduction` prior to usingg the `taxValues` function.
+Where a TaxPayer object's `deduction` amount is `null`, the `taxValues` function will assume a `deduction` amount equal to the appropriate standard deduction only when the first parameter is a `token`. When the first parameter is a tax brackets object, the function will assume `deduction` equals `0`. To avoid confusion, assign `TaxPayer.deduction` prior to usingg the `taxValues` function.
 
 #### marginalRate( ), taxAmount( ), and effectiveRate( )
 Where only one of the `taxValues` values is needed, one can use one of the functions above.
 
-`marginalRate([Token or taxBrackets], [TaxPayer])` is equivalent to `taxValues([Token or taxBrackets], [TaxPayer]).marginalRate`
+`marginalRate([taxBrackets], [TaxPayer])` is equivalent to `taxValues([Token or taxBrackets], [TaxPayer]).marginalRate`
 
 and
 
-`taxAmount([Token or taxBrackets], [TaxPayer])` is equivalent to `taxValues([Token or taxBrackets], [TaxPayer]).taxAmount`
+`taxAmount([taxBrackets], [TaxPayer])` is equivalent to `taxValues([Token or taxBrackets], [TaxPayer]).taxAmount`
 
 and
 
-`effectiveRate([Token or taxBrackets], [TaxPayer])` is equivalent to `taxValues([Token or taxBrackets], [TaxPayer]).effectiveRate`
+`effectiveRate([taxBrackets], [TaxPayer])` is equivalent to `taxValues([Token or taxBrackets], [TaxPayer]).effectiveRate`
 
 
 ### bracketPlot([taxBracket], [deduction], [max Value])
@@ -184,12 +169,9 @@ const plotBrackets = bracketPlot(brackets, 12400, 100000)
 ```
 Neither the second nor third parameter (`deduction` and `maxValue`) are required. 
 
-The second parameter, `deduction`, is the amount of a taxpayer's
-income that is not taxed, thus shifting a plot of the tax bracket to the right by an amount equal to `deduction`. Where a `deduction` amount
-is not supplied it is assumed to be `0`.
+The second parameter, `deduction`, is the amount of a taxpayer's income that is not taxed, thus shifting a plot of the tax bracket to the right by an amount equal to `deduction`. Where a `deduction` amount is not supplied it is assumed to be `0`.
 
-The third parameter `maxValue` is the rightmost income amount of the requested plot. Where `maxValue` is not supplied, it is assumed to be
-twice them amount at which the top tax bracket begins.
+The third parameter `maxValue` is the rightmost income amount of the requested plot. Where `maxValue` is not supplied, it is assumed to be twice them amount at which the top tax bracket begins.
 
 
 ## License

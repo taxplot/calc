@@ -2,16 +2,16 @@ import { taxBrackets } from './taxBrackets'
 import { standardDeduction } from './standardDeduction'
 import { taxValues } from './taxValues'
 
-const marginalRate = async (tokenOrBracket, taxPayer) => {
-  return (await taxValues(tokenOrBracket, taxPayer)).marginalRate
+const marginalRate = (bracket, taxPayer) => {
+  return taxValues(bracket, taxPayer).marginalRate
 }
 
-const taxAmount = async (tokenOrBracket, taxPayer) => {
-  return await (await taxValues(tokenOrBracket, taxPayer)).taxAmount
+const taxAmount = (bracket, taxPayer) => {
+  return taxValues(bracket, taxPayer).taxAmount
 }
 
-const effectiveRate = async (tokenOrBracket, taxPayer) => {
-  return await (await taxValues(tokenOrBracket, taxPayer)).effectiveRate
+const effectiveRate = (bracket, taxPayer) => {
+  return taxValues(bracket, taxPayer).effectiveRate
 }
 
 export {

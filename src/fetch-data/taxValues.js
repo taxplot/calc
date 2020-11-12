@@ -1,24 +1,8 @@
-import { standardDeduction } from './standardDeduction'
-import { taxBrackets } from './taxBrackets'
-const taxValues = async (tokenOrBrackets, taxPayer) => {
-  var token, brackets, marginalRate, taxAmount, effectiveRate
-
-  if (typeof tokenOrBrackets === 'string') {
-    token = tokenOrBrackets
-  } else {
-    brackets = tokenOrBrackets
-  }
-
-  if (token) {
-    brackets = await taxBrackets(token, taxPayer)
-  }
+const taxValues = (brackets, taxPayer) => {
+  var marginalRate, taxAmount, effectiveRate
 
   if (!taxPayer.deduction) {
-    if (token) {
-      taxPayer.deduction = await standardDeduction(token, taxPayer)
-    } else {
-      taxPayer.deduction = 0
-    }
+    taxPayer.deduction = 0
   }
 
   const taxableIncome = Math.max(0, taxPayer.income - taxPayer.deduction)

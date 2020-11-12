@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react'
 
-import { TaxPayer, taxBrackets, standardDeduction, taxValues, marginalRate, taxAmount, effectiveRate, bracketPlot} from '@taxplot/calc'
+import { TaxPayer, 
+  taxBrackets, 
+  standardDeduction, 
+  taxValues, 
+  marginalRate, 
+  taxAmount, 
+  effectiveRate, 
+  bracketPlot} from '@taxplot/calc'
 
 const App = () => {
   const [bracket, setBracket] = useState({  });
@@ -8,12 +15,12 @@ const App = () => {
   
   var plotBracket 
   const token='THISISMYTAXPLOTTOKEN'
-  const taxPayer = new TaxPayer({income:100000})
+  const taxPayer = new TaxPayer({income:100000, deduction:12400})
 
   useEffect(() =>  {
     const getData = async () => {
       const bracket = await taxBrackets(token, taxPayer)
-      const taxData = await bracketPlot(bracket, 12400, 100000)
+      const taxData = taxValues(bracket, taxPayer)
 
       setBracket(bracket)
       setValues(taxData)
