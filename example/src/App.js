@@ -7,23 +7,32 @@ import { TaxPayer,
   marginalRate, 
   taxAmount, 
   effectiveRate, 
-  bracketPlot} from '@taxplot/calc'
+  bracketPlot,
+  payrollRates,
+  payrollTax} from '@taxplot/calc'
 
 const App = () => {
   const [bracket, setBracket] = useState({  });
   const [values, setValues] = useState({  });
+  const [payrollInfo, setPayrollRates] = useState({  });
+  const [payrollValues, setPayrollValues] = useState({  });
+  
   
   var plotBracket 
   const token='THISISMYTAXPLOTTOKEN'
-  const taxPayer = new TaxPayer({income:5, deduction:12400})
+  const taxPayer = new TaxPayer({filingStatus: "MFJ", income: 300000})
 
   useEffect(() =>  {
     const getData = async () => {
       const bracket = await taxBrackets(token, taxPayer)
+      const payrollInfo = await payrollRates(token, taxPayer, 'BOTH')
       const taxData = taxValues(bracket, taxPayer)
+      const payrollItems = payrollTax(payrollInfo, taxPayer)
 
       setBracket(bracket)
       setValues(taxData)
+      setPayrollRates(payrollInfo)
+      setPayrollValues(payrollItems)
     }
     getData()
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -34,8 +43,8 @@ const App = () => {
   // let value
   // taxBrackets(token, someTaxPayer).then(result => value = result)
   return <div>
-          {JSON.stringify(values)}
-
+          {JSON.stringify(payrollValues)}
+          {console.log(payrollValues)}
         </div>
 }
 

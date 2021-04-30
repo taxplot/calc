@@ -5,7 +5,9 @@ import {
   taxValues,
   marginalRate,
   taxAmount,
-  effectiveRate
+  effectiveRate,
+  payrollRates,
+  payrollTax
 } from './fetch-data'
 import { bracketPlot } from './viz-data'
 
@@ -17,5 +19,7 @@ export {
   taxAmount,
   taxValues,
   TaxPayer,
-  bracketPlot
+  bracketPlot,
+  payrollRates,
+  payrollTax
 }

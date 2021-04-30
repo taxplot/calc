@@ -17,7 +17,7 @@ const marginalRates = async (token, taxPayer) => {
     .query({
       query: gql`
         query GetRates {
-          taxbrackets(year: 2020) {
+          taxbrackets(year: 2021) {
             taxRate {
               amountsAbove
               amountsNotMoreThan

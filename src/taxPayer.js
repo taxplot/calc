@@ -1,7 +1,7 @@
 export class TaxPayer {
   constructor(scenario) {
     const defaults = {
-      year: 2020,
+      year: 2021,
       country: 'us',
       jurisdiction: 'federal',
       taxType: 'income',

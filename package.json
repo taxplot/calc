@@ -1,9 +1,9 @@
 {
   "name": "@taxplot/calc",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "tax data and calcs for taxplot",
   "author": "CTBushong",
-  "license": "MIT",
+  "license": "taxplot",
   "repository": {
     "type": "git",
     "url": "/taxplot/calc"

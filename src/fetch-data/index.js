@@ -1,6 +1,9 @@
 import { taxBrackets } from './taxBrackets'
 import { standardDeduction } from './standardDeduction'
 import { taxValues } from './taxValues'
+import { payrollRates } from './payrollRates'
+import { payrollTax } from './payrollTax'
+
 
 const marginalRate = (bracket, taxPayer) => {
   return taxValues(bracket, taxPayer).marginalRate
@@ -20,5 +23,7 @@ export {
   taxValues,
   marginalRate,
   taxAmount,
-  effectiveRate
+  effectiveRate,
+  payrollRates,
+  payrollTax
 }

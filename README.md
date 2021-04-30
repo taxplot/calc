@@ -87,7 +87,7 @@ import { TaxPayer, standardDeduction } from '@taxplot/calc'
 
 const taxPayer = new TaxPayer()
 
-const deduction = standardDeduction(TOKEN, taxPayer)
+const deduction = standardDeduction(TOKEN, taxPayer)### standardDeduction([TOKEN], [TaxPayer])
 
 
 ```
@@ -97,6 +97,41 @@ const deduction = standardDeduction(TOKEN, taxPayer)
 12400
 ```
 This value can then be assigned to `taxPayer.deduction`.
+
+### payrollRates([TOKEN], [TaxPayer], [payerType])
+`payerType` can be `EMPLOYEE`, `EMPLOYER`, `BOTH` or `SELFEMPLOYED` and will determine whether payroll taxes relating to employees, employers or self-employed are returned by the function.
+
+The `payrollRates` function returns a promise that resolves to an object containing the following:
+
+* wageBase - the wage amount above which SS / OASDI is not applied in a given year
+* additionalHIThreshold - The income amount above which additional Medicare / HI will be applied. This will change according to the taxpayer filing status.
+* An array of `PayrollTax` objects, each containing:
+  * `name` which will be OASDI, HI or HI-Additional.
+  * `rate`, and
+  * `amount` which will be null if no income amount is provided in the TaxPayer object.
+
+```JavaScript
+import { TaxPayer, payrollRates } from '@taxplot/calc'
+
+const taxPayer = new TaxPayer()
+
+const payrollObject = payrollRates(TOKEN, taxPayer, 'BOTH')
+
+```
+
+`payrollObject` will resolve to: 
+
+```JavaScript
+{"__typename":"PayrollInfo","wageBase":142800,"additionalHIThreshold":200000,"payrollTax":
+[
+{"__typename":"PayrollTax","name":"OASDI","payer":"Employer","rate":0.062,"amount":null},
+{"__typename":"PayrollTax","name":"HI","payer":"Employer","rate":0.0145,"amount":null},
+{"__typename":"PayrollTax","name":"OASDI","payer":"Employee","rate":0.062,"amount":null},
+{"__typename":"PayrollTax","name":"HI","payer":"Employee","rate":0.0145,"amount":null},
+{"__typename":"PayrollTax","name":"HI-Additional","payer":"Employee","rate":0.009,"amount":null}
+]}
+```
+
 
 ## Synchronous Functions
 ### taxValues([TAX_BRACKET_OBJECT], [TaxPayer])
@@ -137,6 +172,19 @@ and
 
 `effectiveRate([taxBrackets], [TaxPayer])` is equivalent to `taxValues([Token or taxBrackets], [TaxPayer]).effectiveRate`
 
+
+### payrollValues([payrollObject], [TaxPayer])
+
+`payrollValues` returns an array of objects, each containing the payroll tax amounts of the various tax types and payer types as included in the provided `payrollObject`. For example, using the `payrollObject` returned from the `payrollRates` example above and a `TaxPayer` with `income` set to $300,000 will return:
+
+```JavaScript
+{"OASDI":{"Employer":8853.6,"Employee":8853.6,"total":17707.2},
+"Employer":{"OASDI":8853.6,"HI":4350,"total":13203.6},
+"HI":{"Employer":4350,"Employee":4800,"total":9150},
+"Employee":{"OASDI":8853.6,"HI":4800,"total":13653.6},
+"total":26857.2}
+```
+Note that this object contains redundant data. This is so the user can use `PayrollValuesObject.OASDI.Employer` interchangably with `PayrollVauesObject.Employer.OASDI`.
 
 ### bracketPlot([taxBracket], [deduction], [max Value])
 `bracketPlot` is useful for turning a taxBracket object into something that is easily displayed visually. For example,
